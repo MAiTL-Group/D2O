@@ -1,8 +1,8 @@
-# D2O
+# D²O
 
-Official code release for **D2O: A Dual Debiasing Operator for Training-Free Test-Time Adaptation of Vision-Language Models**.
+Official code release for **D²O: A Dual Debiasing Operator for Training-Free Test-Time Adaptation of Vision-Language Models**.
 
-D2O is a strictly training-free inference-time operator for CLIP-style vision-language models. For each test sample, it builds:
+D²O is a strictly training-free inference-time operator for CLIP-style vision-language models. For each test sample, it builds:
 
 - `fcnt`: a retrieval-oriented feature with nuisance-sensitive directions suppressed.
 - `zsty`: a low-dimensional routing coordinate for environment-aware bias tracking.
@@ -10,7 +10,7 @@ D2O is a strictly training-free inference-time operator for CLIP-style vision-la
 
 This repository contains reproducible code for the strongest host-adapter combination used in the paper:
 
-- **D2O+ADAPT**: online and transductive Gaussian-posterior adaptation.
+- **D²O+ADAPT**: online and transductive Gaussian-posterior adaptation.
 
 Generated results, pre-extracted features, probe CSVs, checkpoints, and run logs are intentionally excluded. They can be regenerated from the code.
 
@@ -18,8 +18,8 @@ Generated results, pre-extracted features, probe CSVs, checkpoints, and run logs
 
 ```text
 .
-├── ADAPT_online_ecw_adapt_probe.py        # D2O+ADAPT, online setting
-├── ADAPT_transductive_ecw_adapt_probe.py  # D2O+ADAPT, transductive setting
+├── ADAPT_online_ecw_adapt_probe.py        # D²O+ADAPT, online setting
+├── ADAPT_transductive_ecw_adapt_probe.py  # D²O+ADAPT, transductive setting
 ├── Pre_extract_class_emb_default.py        # CLIP text/class embedding pre-extraction
 ├── clip/                                   # CLIP implementation used by ADAPT host
 ├── configs/
@@ -33,12 +33,12 @@ Generated results, pre-extracted features, probe CSVs, checkpoints, and run logs
 │   ├── run_d2o_adapt_transductive.sh
 │   └── run_d2o_adapt_transductive_paper_presets.sh
 ├── utils/                                  # shared utilities
-├── requirements_adapt.txt                  # ADAPT/D2O+ADAPT environment deps
+├── requirements_adapt.txt                  # ADAPT/D²O+ADAPT environment deps
 ```
 
 ## Environments
 
-D2O+ADAPT follows the ADAPT environment:
+D²O+ADAPT follows the ADAPT environment:
 
 ```bash
 conda create -n d2o_adapt python=3.10
@@ -81,7 +81,7 @@ For ImageNet variants and PUG, also keep the corresponding `classnames.txt` file
 
 ## Pre-Extract Class Embeddings
 
-D2O+ADAPT uses CLIP text/class embeddings stored under `pre_extracted_class_feat/`. They are generated, not committed. Generate them once for the `TESTSETS` you plan to evaluate before running the ADAPT preset scripts.
+D²O+ADAPT uses CLIP text/class embeddings stored under `pre_extracted_class_feat/`. They are generated, not committed. Generate them once for the `TESTSETS` you plan to evaluate before running the ADAPT preset scripts.
 
 ```bash
 DATA_ROOT=/path/to/data \
@@ -98,7 +98,7 @@ DATA_ROOT=/path/to/data TESTSETS=pug_cpitch bash scripts/pre_extract_class_emb.s
 
 For the full ADAPT paper preset suite, pass the same slash-separated dataset names used by the preset scripts, or run the pre-extraction command separately for each group.
 
-## Run D2O+ADAPT
+## Run D²O+ADAPT
 
 Online:
 
@@ -137,4 +137,13 @@ We thank the authors for releasing their code and dataset preparation instructio
 
 ## Citation
 
-Citation information will be added with the public paper version.
+If you find this repository useful, please cite:
+
+```bibtex
+@inproceedings{luo2026d2o,
+  title={{D²O}: A Dual Debiasing Operator for Training-Free Test-Time Adaptation of Vision-Language Models},
+  author={Luo, Yihong and He, Wenwu and Liang, Dong and Zhou, Yihang and Cui, Zhuo-Xu},
+  booktitle={Proceedings of the 43rd International Conference on Machine Learning},
+  year={2026}
+}
+```
