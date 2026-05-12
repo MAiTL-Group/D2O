@@ -2,6 +2,12 @@
 
 Official code release for **D²O: A Dual Debiasing Operator for Training-Free Test-Time Adaptation of Vision-Language Models**.
 
+**Accepted by ICML 2026.**  
+
+<p align="center">
+  <img src="asset/D2O.png" alt="D²O motivation figure" width="100%">
+</p>
+
 D²O is a strictly training-free inference-time operator for CLIP-style vision-language models. For each test sample, it builds:
 
 - `fcnt`: a retrieval-oriented feature with nuisance-sensitive directions suppressed.
@@ -21,6 +27,7 @@ Generated results, pre-extracted features, probe CSVs, checkpoints, and run logs
 ├── ADAPT_online_ecw_adapt_probe.py        # D²O+ADAPT, online setting
 ├── ADAPT_transductive_ecw_adapt_probe.py  # D²O+ADAPT, transductive setting
 ├── Pre_extract_class_emb_default.py        # CLIP text/class embedding pre-extraction
+├── asset/                                  # motivation figure and README assets
 ├── clip/                                   # CLIP implementation used by ADAPT host
 ├── configs/
 │   └── d2o_paper_hparams.yaml              # dataset-specific paper preset groups
