@@ -1,6 +1,4 @@
-# D²O
-
-Official code release for **D²O: A Dual Debiasing Operator for Training-Free Test-Time Adaptation of Vision-Language Models**.
+# D²O: A Dual Debiasing Operator for Training-Free Test-Time Adaptation of Vision-Language Models
 
 **Accepted by ICML 2026.**  
 
