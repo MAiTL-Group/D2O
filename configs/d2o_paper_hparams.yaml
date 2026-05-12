@@ -1,0 +1,104 @@
+# Dataset-specific D2O hyperparameters used for the paper.
+# Only gamma_env and cpen_lambda_proj differ across these presets;
+# all other D2O/ADAPT settings follow the default scripts.
+
+online:
+  imagenet_variants:
+    imagenetv2:
+      gamma_env: 0.1
+      cpen_lambda_proj: 0.4
+    imagenet_a:
+      gamma_env: 0.5
+      cpen_lambda_proj: 0.4
+    imagenet_r:
+      gamma_env: 0.5
+      cpen_lambda_proj: 0.4
+    imagenet_sketch:
+      gamma_env: 0.5
+      cpen_lambda_proj: 0.4
+
+  imagenet_c:
+    gamma_env: 0.15
+    cpen_lambda_proj: 0.4
+
+  pug:
+    datasets:
+      - pug_cpitch
+      - pug_cyaw
+      - pug_croll
+      - pug_opitch
+      - pug_oroll
+      - pug_oscale
+      - pug_otexture
+      - pug_oyaw
+      - pug_slight
+      - pug_worlds
+    gamma_env: 0.8
+    cpen_lambda_proj: 0.4
+
+  fine_grained:
+    special:
+      datasets:
+        - oxford_flowers
+        - fgvc_aircraft
+        - ucf101
+      gamma_env: 0.15
+      cpen_lambda_proj: 0.4
+    default:
+      datasets:
+        - caltech101
+        - stanford_cars
+        - dtd
+        - eurosat
+        - food101
+        - oxford_pets
+        - sun397
+      gamma_env: 0.1
+      cpen_lambda_proj: 0.4
+
+transductive:
+  imagenet_variants:
+    datasets:
+      - imagenetv2
+      - imagenet_a
+      - imagenet_r
+      - imagenet_sketch
+    gamma_env: 0.5
+    cpen_lambda_proj: 0.4
+
+  imagenet_c:
+    gamma_env: 0.5
+    cpen_lambda_proj: 0.4
+
+  pug:
+    datasets:
+      - pug_cpitch
+      - pug_cyaw
+      - pug_croll
+      - pug_opitch
+      - pug_oroll
+      - pug_oscale
+      - pug_otexture
+      - pug_oyaw
+      - pug_slight
+      - pug_worlds
+    gamma_env: 0.8
+    cpen_lambda_proj: 0.4
+
+  fine_grained:
+    dtd:
+      gamma_env: 0.01
+      cpen_lambda_proj: 0.4
+    default:
+      datasets:
+        - caltech101
+        - oxford_flowers
+        - fgvc_aircraft
+        - stanford_cars
+        - eurosat
+        - food101
+        - oxford_pets
+        - sun397
+        - ucf101
+      gamma_env: 0.1
+      cpen_lambda_proj: 0.4

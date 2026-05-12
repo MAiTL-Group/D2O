@@ -1,0 +1,11 @@
+torch==2.5.1
+torchvision
+numpy
+tqdm
+pillow
+pandas
+openpyxl
+scipy
+scikit-learn
+ftfy
+regex
