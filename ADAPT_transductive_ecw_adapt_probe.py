@@ -604,7 +604,7 @@ def main_worker(args):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='ADAPT Transductive Evaluation')
+    parser = argparse.ArgumentParser(description='D2O+ADAPT transductive evaluation')
     parser.add_argument('--data', metavar='DIR', default='./datasets/TPT/', help='path to dataset root')
     parser.add_argument('--test_set', type=str, default='imagenet', help='dataset name')
     parser.add_argument('-a', '--arch', metavar='ARCH', default='ViT-B/16', help=" CLIP model backbone:'RN50' or'ViT-B/16'.")
@@ -619,10 +619,12 @@ if __name__ == '__main__':
     parser.add_argument('--GPT', action='store_true', default=True, help="use the description or not ")
     parser.add_argument('--bt', type=int, default=64, help="the batch size of test data loader")
 
-    parser.add_argument('--prior', type=str, default='logits', choices=['prob', 'logits'])
+    parser.add_argument('--prior', type=str, default='logits', choices=['prob', 'logits'],
+                        help='ADAPT prior used in the closed-form fusion')
     parser.add_argument('--view_select_ratio', type=float, default=0.1)
 
-    parser.add_argument('--cpen', action='store_true', help='Enable E-CW-ADAPT extensions')
+    parser.add_argument('--cpen', action='store_true',
+                        help='Enable D2O+ADAPT extensions; flag name kept for backward-compatible scripts')
     parser.add_argument('--cpen_max_samples', type=int, default=128)
     parser.add_argument('--cpen_shrinkage', type=float, default=0.1)
     parser.add_argument('--cpen_var_ratio', type=float, default=0.6)

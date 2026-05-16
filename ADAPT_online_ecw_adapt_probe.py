@@ -163,7 +163,7 @@ class ProbeWriter:
                 pass
 
 # ============================================================
-# CPEN / E-CW-ADAPT core pieces
+# D2O+ADAPT core pieces
 # ============================================================
 
 _CLIP_MEAN = torch.tensor([0.48145466, 0.4578275, 0.40821073]).view(1, 3, 1, 1)
@@ -501,7 +501,7 @@ def update_knowledge_banks_dual(banks, features_loss, bank_size):
 def compute_final_prediction(clip_prior, GDA_logits, similarity_matrix, cache_logits, args):
     """
     Keep ADAPT structure.
-    Note: clip_prior can be prob or logits depending on args.prior. (prob recommended for E-CW-ADAPT)
+    Note: clip_prior can be prob or logits depending on args.prior.
     """
     logP = torch.log_softmax(GDA_logits, dim=1)
     inter = logP
@@ -511,7 +511,7 @@ def compute_final_prediction(clip_prior, GDA_logits, similarity_matrix, cache_lo
     return clip_prior * torch.exp((1.0 / args.scale) * inter)
 
 # ============================================================
-# Main evaluation loop (E-CW-ADAPT)
+# Main evaluation loop (D2O+ADAPT)
 # ============================================================
 
 @torch.no_grad()
@@ -575,7 +575,7 @@ def evaluation(val_loader, clip_weights, image_encoder, args, dataset_name: str,
     mean = None
     W = b = None
     use_raw_wij = bool(getattr(args, "raw_wij", False) or dataset_name == "imagenet_c")
-    feature_msg = "[E-CW-ADAPT] similarity_feature=raw" if use_raw_wij else "[E-CW-ADAPT] similarity_feature=content"
+    feature_msg = "[D2O+ADAPT] similarity_feature=raw" if use_raw_wij else "[D2O+ADAPT] similarity_feature=content"
     if dataset_name == "imagenet_c" and not getattr(args, "raw_wij", False):
         feature_msg += " (ImageNet-C preset)"
     print(feature_msg)
@@ -606,12 +606,12 @@ def evaluation(val_loader, clip_weights, image_encoder, args, dataset_name: str,
             min_mp_ratio=args.cpen_min_mp_ratio,
         )
         if U is None:
-            print("[E-CW-ADAPT] U_sty is None -> fallback to plain ADAPT (no env/style routing, no content weighting).")
+            print("[D2O+ADAPT] U_sty is None -> fallback to plain ADAPT (no env/style routing, no content weighting).")
         else:
             if style_dim is None or style_dim <= 0:
                 style_dim = min(8, U.size(1))
             style_dim = min(style_dim, U.size(1))
-            print(f"[E-CW-ADAPT] U rank={U.size(1)}, use style_dim={style_dim}")
+            print(f"[D2O+ADAPT] U rank={U.size(1)}, use style_dim={style_dim}")
             env_state = init_env_state(args.cpen_max_clusters, num_classes=cls_num, style_k=style_dim, device=clip_weights.device)
 
     # ---------------- Knowledge Banks ----------------
@@ -667,7 +667,7 @@ def evaluation(val_loader, clip_weights, image_encoder, args, dataset_name: str,
             logits_prior_all = logits_raw_all - gamma_eff * b_e.view(1, -1).to(logits_raw_all.device, logits_raw_all.dtype)
             env_applied = 1
 
-        # 4) ADAPT selection / confidence uses the debiased prior logits (E-CW-ADAPT Replace #1)
+        # 4) ADAPT selection / confidence uses the D2O debiased prior logits.
         f_raw, clip_logits_prior, prob_map, loss, pred = _select_low_entropy(feats_all, logits_prior_all, select_ratio=args.view_select_ratio)
 
         # also keep clip-only (for probe & safe fuse)
@@ -898,7 +898,7 @@ def main_worker(args):
                 log_fh.close()
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='E-CW-ADAPT: Environment-debiased & Content-Weighted ADAPT (training-free)')
+    parser = argparse.ArgumentParser(description='D2O+ADAPT: Dual debiasing for training-free ADAPT')
 
     parser.add_argument('--data', metavar='DIR', default='./datasets/TPT/', help='path to dataset root')
     parser.add_argument('--test_set', type=str, default='imagenet', help='dataset name(s), separated by "/"')
@@ -919,19 +919,19 @@ if __name__ == '__main__':
     parser.add_argument('--class_type', default='Custom', type=str, help="Custom, Vanilla, Img_temp, Ensemble")
     parser.add_argument('--GPT', action='store_true', default=True, help="use the description or not ")
 
-    # ADAPT prior in the closed-form (prob recommended; keep your current default via sh if needed)
+    # ADAPT prior in the closed-form fusion.
     parser.add_argument('--prior', type=str, default='logits', choices=['prob', 'logits'])
 
     # View selection (same as ADAPT logic; you can keep default)
     parser.add_argument('--view_select_ratio', type=float, default=0.1, help='ratio of low-entropy views to average (ADAPT default ~0.1)')
 
-    # E-CW-ADAPT switches
-    parser.add_argument('--cpen', action='store_true', help='Enable E-CW-ADAPT extensions (style routing + content weighting)')
+    # D2O+ADAPT switches. The cpen flag name is kept for backward-compatible scripts.
+    parser.add_argument('--cpen', action='store_true', help='Enable D2O+ADAPT extensions (style routing + content weighting)')
     parser.add_argument('--cpen_max_samples', type=int, default=128, help='Samples to estimate style basis U')
     parser.add_argument('--cpen_shrinkage', type=float, default=0.1)
     parser.add_argument('--cpen_var_ratio', type=float, default=0.6)
     parser.add_argument('--cpen_max_rank', type=int, default=16)
-    parser.add_argument('--cpen_min_mp_ratio', type=float, default=0.05, help='If MP-selected rank is too small, skip CPEN (return None)')
+    parser.add_argument('--cpen_min_mp_ratio', type=float, default=0.05, help='If MP-selected rank is too small, skip D2O subspace estimation (return None)')
     parser.add_argument('--cpen_style_dim', type=int, default=8)
     parser.add_argument('--cpen_lambda_proj', type=float, default=0.4, help='content projection removal strength λ_proj')
 
