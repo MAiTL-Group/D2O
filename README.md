@@ -33,9 +33,7 @@ Generated results, pre-extracted features, probe CSVs, checkpoints, and run logs
 ├── descriptions/                           # GPT-assisted class descriptions
 ├── scripts/
 │   ├── pre_extract_class_emb.sh
-│   ├── run_d2o_adapt_online.sh
 │   ├── run_d2o_adapt_online_paper_presets.sh
-│   ├── run_d2o_adapt_transductive.sh
 │   └── run_d2o_adapt_transductive_paper_presets.sh
 ├── utils/                                  # shared utilities
 ├── requirements_adapt.txt                  # ADAPT/D²O+ADAPT environment deps
